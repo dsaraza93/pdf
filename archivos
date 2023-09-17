@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contador de éxito</title>
+    <style>
+        #resultado {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        <input type="file" name="archivo">
+        <input type="submit" value="Subir y Analizar">
+    </form>
+
+    <div id="respuesta">
+        <?php
+        error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Verificar si se subió un archivo
+            if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] === UPLOAD_ERR_OK) {
+                // Obtener el contenido del archivo
+                $contenido = file_get_contents($_FILES['archivo']['tmp_name']);
+
+                // Contar las veces que se repite la palabra "éxito" (case-insensitive)
+                $conteo = preg_match_all("/\bexito\b/i", $contenido, $matches);
+
+                if ($conteo !== false) {
+                    echo 'Veces que se repite la palabra "éxito": ' . count($matches[0]);
+                } else {
+                    echo 'Error al contar la palabra "éxito".';
+                }
+            } else {
+                echo 'No se ha subido ningún archivo.';
+            }
+        }
+        ?>
+    </div>
+</body>
+</html>
